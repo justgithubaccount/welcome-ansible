@@ -1,0 +1,20 @@
+# Install Jenkins
+- name: Install and start Jenkins
+  hosts: jenkins
+  become: yes
+
+  tasks:
+    - name: Ensure the jenkins apt repository key is installed
+      apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key state=present
+
+    - name: Ensure the repository is configured
+      apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+
+    - name: Ensure Java (JRE) is installed
+      apt: name=openjdk-17-jre state=present
+
+    - name: Ensure Jenkins is installed
+      apt: name=jenkins update_cache=yes
+
+    - name: Ensure Jenkins is running
+      service: name=jenkins state=started
