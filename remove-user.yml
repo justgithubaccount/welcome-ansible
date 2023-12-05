@@ -1,0 +1,10 @@
+- name: Remove the user
+  hosts: jenkins
+  become: yes
+
+  tasks:
+    - name: Remove the user 'john'
+      ansible.builtin.user:
+        name: john
+        state: absent
+        remove: yes

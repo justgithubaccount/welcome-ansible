@@ -1,0 +1,33 @@
+- name: Install and Start Jenkins
+  hosts: jenkins
+  become: true
+
+  tasks:
+    - name: Ensure the jenkins apt repository key is installed
+      ansible.builtin.get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+        mode: '0644'
+        force: true
+
+    - name: Ensure the repository is configured
+      ansible.builtin.apt_repository:
+        repo: 'deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/'
+        state: present
+
+    - name: Ensure Java (JRE) is installed
+      ansible.builtin.apt:
+        name: openjdk-17-jre
+        state: present
+        update_cache: true
+
+    - name: Ensure Jenkins is installed
+      ansible.builtin.apt:
+        name: jenkins
+        state: present
+        update_cache: true
+
+    - name: Ensure Jenkins is running
+      ansible.builtin.service:
+        name: jenkins
+        state: started

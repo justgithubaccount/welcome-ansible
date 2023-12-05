@@ -1,0 +1,101 @@
+{
+    "_meta": {
+        "hostvars": {
+            "jenkins": {
+                "ansible_connection": "ssh",
+                "ansible_host": "185.93.109.137",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "netangels",
+            "staging_all",
+            "prod_all",
+            "db_all",
+            "web_all",
+            "app_all"
+        ]
+    },
+    "app_all": {
+        "children": [
+            "staging_app",
+            "prod_app"
+        ]
+    },
+    "db_all": {
+        "children": [
+            "staging_db",
+            "prod_db"
+        ]
+    },
+    "netangels": {
+        "hosts": [
+            "jenkins"
+        ]
+    },
+    "prod_all": {
+        "children": [
+            "prod_db",
+            "prod_web",
+            "prod_app"
+        ]
+    },
+    "prod_app": {
+        "hosts": [
+            "10.10.10.26",
+            "10.10.10.27",
+            "10.10.10.28"
+        ]
+    },
+    "prod_db": {
+        "hosts": [
+            "10.10.10.20",
+            "10.10.10.21",
+            "10.10.10.22"
+        ]
+    },
+    "prod_web": {
+        "hosts": [
+            "10.10.10.23",
+            "10.10.10.24",
+            "10.10.10.25"
+        ]
+    },
+    "staging_all": {
+        "children": [
+            "staging_db",
+            "staging_web",
+            "staging_app"
+        ]
+    },
+    "staging_app": {
+        "hosts": [
+            "10.10.10.16",
+            "10.10.10.17",
+            "10.10.10.18"
+        ]
+    },
+    "staging_db": {
+        "hosts": [
+            "10.10.10.10",
+            "10.10.10.11",
+            "10.10.10.12"
+        ]
+    },
+    "staging_web": {
+        "hosts": [
+            "10.10.10.13",
+            "10.10.10.14",
+            "10.10.10.15"
+        ]
+    },
+    "web_all": {
+        "children": [
+            "staging_web",
+            "prod_web"
+        ]
+    }
+}

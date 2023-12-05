@@ -1,7 +1,6 @@
-# Install Jenkins
 - name: Install and start Jenkins
   hosts: jenkins
-  become: yes
+  become: true
 
   tasks:
     - name: Ensure the jenkins apt repository key is installed
