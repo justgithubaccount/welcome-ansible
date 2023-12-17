@@ -1,0 +1,4 @@
+---
+ansible_user: earth
+ansible_ssh_pass: Aa123456
+ansible_sudo_pass: Aa123456

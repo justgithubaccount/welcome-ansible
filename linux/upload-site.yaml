@@ -1,0 +1,46 @@
+---
+- name: Install Nginx Server
+  hosts: all
+  become: true
+
+  vars:
+    source_files: ./tst-site/
+    destination_directory: /var/www/html
+
+  tasks:
+    - name: Install Nginx
+      block:
+        - name: Install Nginx package
+          ansible.builtin.apt:
+            name: nginx
+            state: present
+            update_cache: true
+      rescue:
+        - name: Handle installation error
+          ansible.builtin.debug:
+            msg: "Failed to install Nginx"
+
+    - name: Copy Site Files
+      block:
+        - name: Copy files
+          ansible.builtin.copy:
+            src: "{{ source_files }}"
+            dest: "{{ destination_directory }}"
+            mode: '0555'
+          notify: Restart Nginx
+      rescue:
+        - name: Handle copy error
+          ansible.builtin.debug:
+            msg: "Failed to copy files"
+
+    - name: Start Nginx services
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
